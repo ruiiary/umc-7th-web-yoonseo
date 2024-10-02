@@ -1,29 +1,28 @@
 import { useState } from "react";
-import styled from "styled-components";
 import "./App.css";
+import Button from "./components/Button";
+import Input from "./components/Input";
+import styled from "styled-components";
 
 function App() {
-  const [todoText, setTodoText] = useState(""); // 입력된 텍스트 상태
-  const [todoList, setTodoList] = useState([]); // 해야 할 일 리스트
-  const [completedList, setCompletedList] = useState([]); // 완료된 일 리스트
+  const [todoText, setTodoText] = useState("");
+  const [todoList, setTodoList] = useState([]);
+  const [completedList, setCompletedList] = useState([]);
 
-  // 할 일 추가 함수
   const addTodo = () => {
-    if (todoText.trim() === "") return; // 빈 입력 방지
-    setTodoList([...todoList, todoText]); // 해야 할 일 리스트에 추가
-    setTodoText(""); // 입력 필드 초기화
+    if (todoText.trim() === "") return;
+    setTodoList([...todoList, todoText]);
+    setTodoText("");
   };
 
-  // 완료 버튼 클릭 시, 완료된 일로 이동
   const completeTodo = (index) => {
-    const completedTask = todoList[index]; // 완료된 할 일
-    setCompletedList([...completedList, completedTask]); // 완료 리스트에 추가
-    setTodoList(todoList.filter((_, i) => i !== index)); // 해야 할 일에서 제거
+    const completedTask = todoList[index];
+    setCompletedList([...completedList, completedTask]);
+    setTodoList(todoList.filter((_, i) => i !== index));
   };
 
-  // 삭제 버튼 클릭 시, 완료된 일에서 제거
   const deleteTodo = (index) => {
-    setCompletedList(completedList.filter((_, i) => i !== index)); // 완료된 리스트에서 삭제
+    setCompletedList(completedList.filter((_, i) => i !== index));
   };
 
   return (
@@ -33,12 +32,11 @@ function App() {
       <Line />
       <div>
         <Input
-          type="text"
           value={todoText}
           onChange={(e) => setTodoText(e.target.value)}
           placeholder="해야 할 일 / 해낸 일을 작성해 주세요."
         />
-        <AddBtn onClick={addTodo}>+</AddBtn>
+        <Button onClick={addTodo}>+</Button>
       </div>
       <ListContainer>
         <List>
@@ -47,7 +45,12 @@ function App() {
             {todoList.map((todo, index) => (
               <Todo key={index}>
                 {todo}
-                <button onClick={() => completeTodo(index)}>완료</button>
+                <Button
+                  style={{ height: "20px", width: "100px" }}
+                  onClick={() => completeTodo(index)}
+                >
+                  완료
+                </Button>
               </Todo>
             ))}
           </ul>
@@ -58,7 +61,7 @@ function App() {
             {completedList.map((todo, index) => (
               <Todo key={index}>
                 {todo}
-                <button onClick={() => deleteTodo(index)}>삭제</button>
+                <Button onClick={() => deleteTodo(index)}>삭제</Button>
               </Todo>
             ))}
           </ul>
@@ -70,29 +73,9 @@ function App() {
 
 export default App;
 
-//styled component
 export const Line = styled.div`
   border: lightgray 0.1px solid;
   margin-bottom: 20px;
-`;
-export const Input = styled.input`
-  width: 500px;
-  height: 40px;
-  margin: 40px;
-  padding: 10px;
-  background-color: lightgray;
-  border-radius: 10px;
-  border: none;
-`;
-
-export const AddBtn = styled.button`
-  width: 50px;
-  height: 50px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
 `;
 
 export const ListContainer = styled.div`
