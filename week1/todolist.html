@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TODO List</title>
+    <link rel="stylesheet" href="todolist.css" />
+  </head>
+  <body>
+    <h1>UMC Web Study</h1>
+    <h3
+      style="
+        text-align: right;
+        font-weight: normal;
+        margin-right: 50px;
+        font-size: 1rem;
+      "
+    >
+      UMC 7기 Web 루이/전윤서
+    </h3>
+    <div style="border-top: 0.1px solid lightgray; margin-bottom: 60px">
+      <input
+        id="inputbar"
+        type="text"
+        placeholder="해야 할 일 / 해낸 일을 작성해 주세요."
+      />
+      <button id="addBtn" style="padding: 10px; border-radius: 30px; ">+</button>
+    </div>
+
+    <div id="listContainer">
+      <div>
+        <strong>해야 할 일</strong>
+        <ul id="todoList" style="margin-top: 10px; list-style:none;"></ul>
+      </div>
+      <div>
+        <strong>완료한 일</strong>
+        <ul id="completedList" style="margin-top: 10px; list-style:none; align-text: center;"></ul>
+      </div>
+    </div>
+
+    <script>
+      const inputBar = document.getElementById("inputbar");
+      const todoList = document.getElementById("todoList");
+      const completedList = document.getElementById("completedList");
+      const addBtn = document.getElementById("addBtn");
+
+      // 할 일 추가 함수
+      function addTodo() {
+        const todoText = inputBar.value.trim(); // 입력값 가져오기
+        if (todoText === "") return; // 빈 값이면 추가 안함
+
+        // 새로운 li 요소와 완료 버튼 생성
+        const listItem = document.createElement("li");
+        listItem.textContent = todoText;
+
+        const doneBtn = document.createElement("button");
+        doneBtn.textContent = "완료";
+        doneBtn.style.marginLeft = "60px";
+
+        // 완료 버튼 클릭 시 '해야 할 일'에서 '완료한 일'로 이동
+        doneBtn.addEventListener("click", () => {
+          // 완료된 일 항목으로 이동
+          moveToCompleted(listItem, todoText);
+        });
+
+        // '해야 할 일' 리스트에 추가
+        listItem.appendChild(doneBtn);
+        todoList.appendChild(listItem);
+
+        // 입력창 비우기
+        inputBar.value = "";
+      }
+
+      // 완료된 일로 이동하는 함수
+      function moveToCompleted(listItem, todoText) {
+        // 완료된 일 항목 새로 생성
+        const completedItem = document.createElement("li");
+        completedItem.textContent = todoText;
+
+        // 삭제 버튼 생성
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "삭제";
+        delBtn.style.marginLeft = "60px";
+
+        // 삭제 버튼 클릭 시 항목 제거
+        delBtn.addEventListener("click", () => {
+          completedList.removeChild(completedItem);
+        });
+
+        // 완료된 리스트에 삭제 버튼 추가
+        completedItem.appendChild(delBtn);
+        completedList.appendChild(completedItem);
+
+        // 해야 할 일 리스트에서 해당 항목 제거
+        todoList.removeChild(listItem);
+      }
+
+      // 버튼 클릭으로 할 일 추가
+      addBtn.addEventListener("click", addTodo);
+
+      // 엔터 키 입력 시 할 일 추가
+      inputBar.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          addTodo();
+        }
+      });
+    </script>
+  </body>
+</html>
