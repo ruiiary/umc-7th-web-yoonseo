@@ -1,2 +1,2 @@
-# umc-7th-web
+# umc-7th-web-Rui/Yoonseo
 💻 7th UMC Ewha Web Repository
