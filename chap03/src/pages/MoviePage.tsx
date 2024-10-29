@@ -26,7 +26,7 @@ const MoviesPage = () => {
           `https://api.themoviedb.org/3/movie/popular?language=en-US&page=1`,
           {
             headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwZDU1NjNhMzNkMmI1NWNmY2VkYWYzMTU4ODI2NDVjYSIsIm5iZiI6MTczMDIxNDc0NC41OTM1MTEsInN1YiI6IjY3MDVlZDUwN2UzY2VlN2QzZjljYWUwNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.TuK0GujmxFk3qIp1U9RcRy3wypCQHLLvp_Plw3DMaHo`,
+              Authorization: `Bearer MY_API`,
             },
           }
         )
