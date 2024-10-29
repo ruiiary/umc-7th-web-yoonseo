@@ -1,0 +1,62 @@
+import { useEffect, useState } from 'react'
+import axios, { AxiosResponse } from 'axios'
+import styled from 'styled-components'
+import Card from '../components/Card'
+
+// 단일 영화 데이터 인터페이스 정의
+interface Movie {
+  id: number
+  title: string
+  poster_path: string
+}
+
+// API 응답 형식 정의
+interface MoviesResponse {
+  results: Movie[]
+}
+
+const MoviesPage = () => {
+  // Movie 배열을 상태로 설정
+  const [movies, setMovies] = useState<Movie[]>([])
+
+  useEffect(() => {
+    const getMovies = async () => {
+      try {
+        const response: AxiosResponse<MoviesResponse> = await axios.get(
+          `https://api.themoviedb.org/3/movie/popular?language=en-US&page=1`,
+          {
+            headers: {
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwZDU1NjNhMzNkMmI1NWNmY2VkYWYzMTU4ODI2NDVjYSIsIm5iZiI6MTczMDIxNDc0NC41OTM1MTEsInN1YiI6IjY3MDVlZDUwN2UzY2VlN2QzZjljYWUwNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.TuK0GujmxFk3qIp1U9RcRy3wypCQHLLvp_Plw3DMaHo`,
+            },
+          }
+        )
+        setMovies(response.data.results)
+      } catch (error) {
+        console.error('영화 데이터를 가져오는 중 오류 발생:', error)
+      }
+    }
+    getMovies()
+  }, [])
+
+  return (
+    <CardList>
+      {movies.map((movie) => (
+        <Card
+          key={movie.id}
+          title={movie.title}
+          poster_path={movie.poster_path}
+        />
+      ))}
+    </CardList>
+  )
+}
+
+export default MoviesPage
+
+// styled-components
+const CardList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 20px;
+`
