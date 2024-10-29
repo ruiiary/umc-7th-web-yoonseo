@@ -4,6 +4,7 @@ const GlobalStyle = createGlobalStyle`
   #root {
     margin: 0;
     padding: 0;
+    width: 100%;
   }
 
   * {
@@ -20,8 +21,8 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     overflow-x: hidden; /* 수평 스크롤 숨기기 */
-    background-color: #ffffff; 
-    color: #000000; 
+    background-color: #000000; 
+    color: #ffffff; 
     width: 100%;
     display: block; /* 기존의 flex나 grid 설정이 있으면 block으로 변경 */
   }

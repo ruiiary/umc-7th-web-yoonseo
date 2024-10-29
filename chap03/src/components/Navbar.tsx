@@ -1,12 +1,47 @@
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 const Navbar = () => {
-  return(
+  return (
     <nav>
-      <Link to={'/'}>홈페이지로 이동</Link>
-      <Link to='/movies'>영화 목록 페이지로 이동</Link>
+      <NavWrapper>
+        <Link to={'/'}>
+          <h2 style={{ color: '#896CFF' }}>LOGO</h2>
+        </Link>
+        <ButtonWrapper>
+          <Link to={'/'}>
+            <Button>로그인</Button>
+          </Link>
+          <Link to="/movies">
+            <Button style={{ backgroundColor: '#896CFF' }}>회원가입</Button>
+          </Link>
+        </ButtonWrapper>
+      </NavWrapper>
     </nav>
   )
 }
 
-export default Navbar;
+export default Navbar
+
+// styled-components
+const NavWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+`
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 15px;
+`
+
+const Button = styled.button`
+  border-radius: 20px;
+  color: #ffffff;
+  padding: 5px 10px;
+  font-size: 14px;
+  &:hover {
+    background-color: #C2C7FF;
+  }
+`

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import axios, { AxiosResponse } from 'axios'
 import styled from 'styled-components'
+import Card from '../components/Card'
 
 // 단일 영화 데이터 인터페이스 정의
 interface Movie {
   id: number
   title: string
-  overview: string
-  // 필요한 경우 더 많은 필드를 추가
+  poster_path: string
 }
 
 // API 응답 형식 정의
@@ -30,7 +30,7 @@ const MoviesPage = () => {
             },
           }
         )
-        setMovies(response.data.results) // results 배열을 상태로 설정
+        setMovies(response.data.results)
       } catch (error) {
         console.error('영화 데이터를 가져오는 중 오류 발생:', error)
       }
@@ -39,16 +39,24 @@ const MoviesPage = () => {
   }, [])
 
   return (
-    <div>
+    <CardList>
       {movies.map((movie) => (
-        <div key={movie.id}>
-          <h2>{movie.title}</h2>
-          <p>{movie.overview}</p>
-          {/* <Card movie={movie} /> Card 컴포넌트를 사용 중일 경우 주석 해제 */}
-        </div>
+        <Card
+          key={movie.id}
+          title={movie.title}
+          poster_path={movie.poster_path}
+        />
       ))}
-    </div>
+    </CardList>
   )
 }
 
 export default MoviesPage
+
+// styled-components
+const CardList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 20px;
+`
