@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios, { AxiosResponse } from 'axios'
 import styled from 'styled-components'
-import Card from '../components/Card'
+import Card from '../../components/Card'
 
 // 단일 영화 데이터 인터페이스 정의
 interface Movie {
@@ -15,7 +15,7 @@ interface MoviesResponse {
   results: Movie[]
 }
 
-const HomePage = () => {
+const Popular = () => {
   // Movie 배열을 상태로 설정
   const [movies, setMovies] = useState<Movie[]>([])
 
@@ -39,19 +39,22 @@ const HomePage = () => {
   }, [])
 
   return (
-    <CardList>
-      {movies.map((movie) => (
-        <Card
-          key={movie.id}
-          title={movie.title}
-          poster_path={movie.poster_path}
-        />
-      ))}
-    </CardList>
+    <Root>
+      <h2>인기 있는</h2>
+      <CardList>
+        {movies.map((movie) => (
+          <Card
+            key={movie.id}
+            title={movie.title}
+            poster_path={movie.poster_path}
+          />
+        ))}
+      </CardList>
+    </Root>
   )
 }
 
-export default HomePage
+export default Popular
 
 // styled-components
 const CardList = styled.div`
@@ -60,3 +63,4 @@ const CardList = styled.div`
   gap: 16px;
   padding: 20px;
 `
+const Root = styled.div``

@@ -1,62 +1,34 @@
-import { useEffect, useState } from 'react'
-import axios, { AxiosResponse } from 'axios'
 import styled from 'styled-components'
-import Card from '../components/Card'
+import CategoryCard from '../components/CategoryCard'
+import { Link } from 'react-router-dom'
 
-// 단일 영화 데이터 인터페이스 정의
-interface Movie {
-  id: number
-  title: string
-  poster_path: string
-}
-
-// API 응답 형식 정의
-interface MoviesResponse {
-  results: Movie[]
-}
-
-const MoviesPage = () => {
-  // Movie 배열을 상태로 설정
-  const [movies, setMovies] = useState<Movie[]>([])
-
-  useEffect(() => {
-    const getMovies = async () => {
-      try {
-        const response: AxiosResponse<MoviesResponse> = await axios.get(
-          `https://api.themoviedb.org/3/movie/popular?language=en-US&page=1`,
-          {
-            headers: {
-              Authorization: `Bearer MY_API`,
-            },
-          }
-        )
-        setMovies(response.data.results)
-      } catch (error) {
-        console.error('영화 데이터를 가져오는 중 오류 발생:', error)
-      }
-    }
-    getMovies()
-  }, [])
-
+const MoviePage = () => {
   return (
-    <CardList>
-      {movies.map((movie) => (
-        <Card
-          key={movie.id}
-          title={movie.title}
-          poster_path={movie.poster_path}
-        />
-      ))}
-    </CardList>
+    <>
+      <Root>
+        <h2>카테고리</h2>
+        <CategoryWrapper>
+          <Link to={'/now-playing'}>
+            <CategoryCard text="현재 상영중인" />{' '}
+          </Link>
+          <Link to={'/popular'}>
+            <CategoryCard text="인기 있는" />
+          </Link>
+          <Link to={'/top-rated'}>
+            <CategoryCard text="높은 평가를 받은" />
+          </Link>
+          <Link to={'/up-coming'}>
+            <CategoryCard text="개봉 예정인" />
+          </Link>
+        </CategoryWrapper>
+      </Root>
+    </>
   )
 }
 
-export default MoviesPage
+export default MoviePage
 
-// styled-components
-const CardList = styled.div`
+const CategoryWrapper = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  padding: 20px;
 `
+const Root = styled.div``
