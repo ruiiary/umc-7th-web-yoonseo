@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 // 1. 만든 페이지들을 import
 import NotFound from './pages/NotFound'
-import Movies from './pages/MoviePage'
+import Home from './pages/home'
 import Search from './pages/Search'
 import RootLayout from './style/root-layout'
 import GlobalStyle from './style/GlobalStyle'
@@ -19,7 +19,12 @@ const router = createBrowserRouter([
       {
         // 2. index: true는 위의 path: '/' 즉, 홈 경로를 의미한다.
         index: true,
-        element: <Movies />,
+        element: <Home />,
+      },
+      {
+        // 3. 부모의 path가 '/'이니, /를 붙이지 않아도 /movies랑 동일하게 동작한다.
+        path: 'search',
+        element: <Search />,
       },
       {
         // 3. 부모의 path가 '/'이니, /를 붙이지 않아도 /movies랑 동일하게 동작한다.

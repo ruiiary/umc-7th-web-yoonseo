@@ -1,13 +1,31 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { FaSearch } from 'react-icons/fa'
+import { IoHome } from 'react-icons/io5'
+import { MdLocalMovies } from 'react-icons/md'
 
 const Sidebar = () => {
+  const icon_st = { marginRight: '6px', paddingTop: '3px' }
   return (
     <nav>
       <Wrapper>
-        <Link to={'/'}><Button>홈</Button></Link>
-        <Link to={'/search'}><Button>찾기</Button></Link>
-        <Link to="/movies"><Button>영화</Button></Link>
+        <Link to={'/'}>
+          <Button>
+            <IoHome style={icon_st} />홈
+          </Button>
+        </Link>
+        <Link to={'/search'}>
+          <Button>
+            <FaSearch style={icon_st} />
+            찾기
+          </Button>
+        </Link>
+        <Link to="/movies">
+          <Button>
+            <MdLocalMovies style={icon_st} />
+            영화
+          </Button>
+        </Link>
       </Wrapper>
     </nav>
   )
@@ -26,4 +44,5 @@ const Button = styled.button`
   color: #ffffff;
   background-color: #0e0e0e;
   white-space: nowrap;
+  font-size: 17px;
 `

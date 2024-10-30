@@ -1,62 +1,15 @@
-import { useEffect, useState } from 'react'
-import axios, { AxiosResponse } from 'axios'
 import styled from 'styled-components'
-import Card from '../components/Card'
+import CardList from '../components/CardList'
 
-// 단일 영화 데이터 인터페이스 정의
-interface Movie {
-  id: number
-  title: string
-  poster_path: string
-}
-
-// API 응답 형식 정의
-interface MoviesResponse {
-  results: Movie[]
-}
-
-const MoviesPage = () => {
-  // Movie 배열을 상태로 설정
-  const [movies, setMovies] = useState<Movie[]>([])
-
-  useEffect(() => {
-    const getMovies = async () => {
-      try {
-        const response: AxiosResponse<MoviesResponse> = await axios.get(
-          `https://api.themoviedb.org/3/movie/popular?language=en-US&page=1`,
-          {
-            headers: {
-              Authorization: `Bearer MY_API`,
-            },
-          }
-        )
-        setMovies(response.data.results)
-      } catch (error) {
-        console.error('영화 데이터를 가져오는 중 오류 발생:', error)
-      }
-    }
-    getMovies()
-  }, [])
-
+const MoviePage = () => {
   return (
-    <CardList>
-      {movies.map((movie) => (
-        <Card
-          key={movie.id}
-          title={movie.title}
-          poster_path={movie.poster_path}
-        />
-      ))}
-    </CardList>
+    <>
+      <h2>카테고리</h2>
+      <CardList>
+        
+      </CardList>
+    </>
   )
 }
 
-export default MoviesPage
-
-// styled-components
-const CardList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  padding: 20px;
-`
+export default MoviePage
