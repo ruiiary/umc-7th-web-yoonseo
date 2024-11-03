@@ -20,14 +20,14 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* 수평 스크롤 숨기기 */
+    overflow-x: hidden; 
     background-color: #000000; 
     color: #ffffff; 
     width: 100%;
-    display: block; /* 기존의 flex나 grid 설정이 있으면 block으로 변경 */
-  }
-
+    display: block; 
+    
   button {
+    all: unset;
     font: inherit;
     outline: none;
     border: none;

@@ -37,6 +37,9 @@ export default Sidebar
 const Wrapper = styled.div`
   width: 10%;
   white-space: wrap;
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-top: 30px;
 `
 
 const Button = styled.button`
@@ -45,4 +48,6 @@ const Button = styled.button`
   background-color: #0e0e0e;
   white-space: nowrap;
   font-size: 17px;
+  gap: 1px;
+  margin: 5px;
 `
