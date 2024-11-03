@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
-import axios, { AxiosResponse } from 'axios'
 import styled from 'styled-components'
 import Card from '../../components/Card'
+import useCustomFetch from '../../hooks/useCustomFetch'
 
 // 단일 영화 데이터 인터페이스 정의
 interface Movie {
@@ -16,33 +15,18 @@ interface MoviesResponse {
 }
 
 const TopRated = () => {
-  // Movie 배열을 상태로 설정
-  const [movies, setMovies] = useState<Movie[]>([])
+  const { data, isLoading, isError } = useCustomFetch<MoviesResponse>(
+    `${import.meta.env.VITE_MOVIE_API_URL}/movie/top_rated?language=en-US&page=1`
+  )
 
-  useEffect(() => {
-    const getMovies = async () => {
-      try {
-        const response: AxiosResponse<MoviesResponse> = await axios.get(
-          `${import.meta.env.VITE_MOVIE_API_URL}/movie/top_rated?language=en-US&page=1`,
-          {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_MY_API}`,
-            },
-          }
-        )
-        setMovies(response.data.results)
-      } catch (error) {
-        console.error('영화 데이터를 가져오는 중 오류 발생:', error)
-      }
-    }
-    getMovies()
-  }, [])
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error occurred while fetching data</div>
 
   return (
     <Root>
       <h2>높은 평가를 받은</h2>
       <CardList>
-        {movies.map((movie) => (
+        {data?.results.map((movie) => (
           <Card
             key={movie.id}
             title={movie.title}
@@ -63,4 +47,5 @@ const CardList = styled.div`
   gap: 16px;
   padding: 20px;
 `
+
 const Root = styled.div``

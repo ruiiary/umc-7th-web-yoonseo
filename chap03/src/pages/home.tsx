@@ -1,8 +1,6 @@
-//import { useEffect, useState } from 'react'
-//import axios, { AxiosResponse } from 'axios'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import Card from '../components/Card'
-//import axiosInstance from '../apis/axios-instance.ts'
 import useCustomFetch from '../hooks/useCustomFetch.ts'
 
 // 단일 영화 데이터 인터페이스 정의
@@ -28,11 +26,9 @@ const HomePage = () => {
   return (
     <CardList>
       {data?.results.map((movie: Movie) => (
-        <Card
-          key={movie.id}
-          title={movie.title}
-          poster_path={movie.poster_path}
-        />
+        <Link to={`/movies/${movie.id}`} key={movie.id}>
+          <Card title={movie.title} poster_path={movie.poster_path} />
+        </Link>
       ))}
     </CardList>
   )
@@ -46,4 +42,5 @@ const CardList = styled.div`
   flex-wrap: wrap;
   gap: 16px;
   padding: 20px;
+  margin-left: 20px;
 `
