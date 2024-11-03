@@ -23,7 +23,7 @@ const NowPlaying = () => {
     const getMovies = async () => {
       try {
         const response: AxiosResponse<MoviesResponse> = await axios.get(
-          `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1`,
+          `${import.meta.env.VITE_MOVIE_API_URL}/movie/now_playing?language=en-US&page=1`,
           {
             headers: {
               Authorization: `Bearer ${import.meta.env.VITE_MY_API}`,

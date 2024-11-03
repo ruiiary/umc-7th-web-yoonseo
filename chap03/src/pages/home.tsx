@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
-import axios, { AxiosResponse } from 'axios'
+//import { useEffect, useState } from 'react'
+//import axios, { AxiosResponse } from 'axios'
 import styled from 'styled-components'
 import Card from '../components/Card'
+//import axiosInstance from '../apis/axios-instance.ts'
+import useCustomFetch from '../hooks/useCustomFetch.ts'
 
 // 단일 영화 데이터 인터페이스 정의
 interface Movie {
@@ -16,31 +18,16 @@ interface MoviesResponse {
 }
 
 const HomePage = () => {
-  // Movie 배열을 상태로 설정
-  const [movies, setMovies] = useState<Movie[]>([])
+  const { data, isLoading, isError } = useCustomFetch<MoviesResponse>(
+    `/movie/popular?language=en-US&page=1`
+  )
 
-  useEffect(() => {
-    const getMovies = async () => {
-      try {
-        const response: AxiosResponse<MoviesResponse> = await axios.get(
-          `https://api.themoviedb.org/3/movie/popular?language=en-US&page=1`,
-          {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_MY_API}`,
-            },
-          }
-        )
-        setMovies(response.data.results)
-      } catch (error) {
-        console.error('영화 데이터를 가져오는 중 오류 발생:', error)
-      }
-    }
-    getMovies()
-  }, [])
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error occurred while fetching data</div>
 
   return (
     <CardList>
-      {movies.map((movie) => (
+      {data?.results.map((movie: Movie) => (
         <Card
           key={movie.id}
           title={movie.title}

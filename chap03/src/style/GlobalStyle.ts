@@ -28,6 +28,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   button {
+    all: unset;
     font: inherit;
     outline: none;
     border: none;

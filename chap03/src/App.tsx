@@ -6,7 +6,7 @@ import Home from './pages/Home'
 import MoviePage from './pages/MoviePage'
 import Search from './pages/Search'
 import NowPlaying from './pages/movies/NowPlaying'
-import Popular from './pages/movies/popular'
+import Popular from './pages/movies/Popular'
 import TopRated from './pages/movies/TopRated'
 import UpComing from './pages/movies/UpComing'
 
