@@ -9,21 +9,24 @@ export const Root = styled.div`
 `
 export const H2 = styled.h2`
   color: #ffffff;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   font-size: 30px;
 `
 
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  width: 300px;
+  gap: 13px;
+  width: 370px;
   text-align: center;
 `
 
 export const Input = styled.input`
   height: 40px;
-  width: 300px;
+  width: 370px;
+  border-radius: 8px;
+  padding-left: 10px;
+  font-size: 13px;
 `
 
 export const InputWrapper = styled.div`
