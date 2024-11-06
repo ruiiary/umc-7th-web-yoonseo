@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import * as S from './SignInUp.style'
 
 const SignUpPage = () => {
   const schema = z.object({
@@ -31,13 +32,24 @@ const SignUpPage = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input type="email" {...register('email')} />
-      <p style={{ color: 'red' }}>{errors.email?.message as string}</p>
-      <input type="password" {...register('password')} />
-      <p style={{ color: 'red' }}>{errors.password?.message as string}</p>
-      <input type="submit" />
-    </form>
+    <S.Root>
+      <S.Form onSubmit={handleSubmit(onSubmit)}>
+        <S.H2>로그인</S.H2>
+        <S.InputWrapper>
+          <S.Input type="email" placeholder="Email" {...register('email')} />
+          <p style={{ color: 'gray' }}>{errors.email?.message as string}</p>
+        </S.InputWrapper>
+        <S.InputWrapper>
+          <S.Input
+            type="password"
+            placeholder="Password"
+            {...register('password')}
+          />
+          <p style={{ color: 'gray' }}>{errors.password?.message as string}</p>
+        </S.InputWrapper>
+        <S.SubmitInput type="submit" value="Submit" />
+      </S.Form>
+    </S.Root>
   )
 }
 

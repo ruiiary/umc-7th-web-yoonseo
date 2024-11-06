@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import styled from 'styled-components'
+import * as S from './SignInUp.style'
 
 const SignInPage = () => {
   const schema = z.object({
@@ -32,62 +32,26 @@ const SignInPage = () => {
   }
 
   return (
-    <Root>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <H2>로그인</H2>
-        <InputWrapper>
-          <Input type="email" placeholder="Email" {...register('email')} />
+    <S.Root>
+      <S.Form onSubmit={handleSubmit(onSubmit)}>
+        <S.H2>로그인</S.H2>
+        <S.InputWrapper>
+          <S.Input type="email" placeholder="Email" {...register('email')} />
           <p style={{ color: 'gray' }}>{errors.email?.message as string}</p>
-        </InputWrapper>
-        <InputWrapper>
-          <Input
+        </S.InputWrapper>
+        <S.InputWrapper>
+          <S.Input
             type="password"
             placeholder="Password"
             {...register('password')}
           />
           <p style={{ color: 'gray' }}>{errors.password?.message as string}</p>
-        </InputWrapper>
-        <SubmitInput type="submit" value="Submit" />
-      </Form>
-    </Root>
+        </S.InputWrapper>
+        <S.SubmitInput type="submit" value="Submit" />
+      </S.Form>
+    </S.Root>
   )
 }
 
 export default SignInPage
 
-const Root = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh; /* 화면 높이 전체를 차지하여 수직 중심에 배치 */
-`
-const H2 = styled.h2`
-  color: #ffffff;
-  margin-bottom: 10px;
-  font-size: 30px;
-`
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 300px;
-  text-align: center;
-`
-
-const Input = styled.input`
-  height: 40px;
-  width: 300px;
-`
-
-const InputWrapper = styled.div`
-  text-align: left;
-`
-
-const SubmitInput = styled(Input)`
-  border-radius: 20px;
-  margin-top: 10px;
-  font-weight: bold;
-  color: #ffffff;
-  background-color: #896cff;
-`
