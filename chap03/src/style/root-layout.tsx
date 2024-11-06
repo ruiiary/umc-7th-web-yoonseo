@@ -8,8 +8,10 @@ const RootLayout = () => {
     <Root>
       <Navbar />
       <div style={{ display: 'flex' }}>
-        <Sidebar/>
-        <Outlet />
+        <Sidebar />
+        <OutletWrapper>
+          <Outlet />
+        </OutletWrapper>
       </div>
     </Root>
   )
@@ -19,4 +21,8 @@ export default RootLayout
 
 const Root = styled.div`
   width: 100%;
-`;
+`
+
+const OutletWrapper = styled.div`
+  width: 100%;
+`

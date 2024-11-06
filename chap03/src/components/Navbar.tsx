@@ -9,10 +9,10 @@ const Navbar = () => {
           <h2 style={{ color: '#896CFF' }}>LOGO</h2>
         </Link>
         <ButtonWrapper>
-          <Link to={'/'}>
+          <Link to={'/sign-in'}>
             <Button>로그인</Button>
           </Link>
-          <Link to="/movies">
+          <Link to="/sign-up">
             <Button style={{ backgroundColor: '#896CFF' }}>회원가입</Button>
           </Link>
         </ButtonWrapper>
@@ -42,6 +42,6 @@ const Button = styled.button`
   padding: 5px 10px;
   font-size: 14px;
   &:hover {
-    background-color: #C2C7FF;
+    background-color: #c2c7ff;
   }
 `

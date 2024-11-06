@@ -10,6 +10,8 @@ import NowPlaying from './pages/movies/NowPlaying'
 import Popular from './pages/movies/Popular'
 import TopRated from './pages/movies/TopRated'
 import UpComing from './pages/movies/UpComing'
+import SignInPage from './pages/SignIn'
+import SignUpPage from './pages/SignUp'
 
 import RootLayout from './style/root-layout'
 import GlobalStyle from './style/GlobalStyle'
@@ -53,6 +55,14 @@ const router = createBrowserRouter([
       {
         path: 'up-coming',
         element: <UpComing />,
+      },
+      {
+        path: 'sign-up',
+        element: <SignUpPage />,
+      },
+      {
+        path: 'sign-in',
+        element: <SignInPage />,
       },
     ],
   },
