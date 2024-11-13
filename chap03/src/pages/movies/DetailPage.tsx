@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import axiosInstance from '../../apis/axios-instance'
+import axiosInstance1 from '../../apis/axios-instance'
 
 interface MovieDetail {
   title: string
@@ -27,7 +27,7 @@ const DetailPage = () => {
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
-        const response = await axiosInstance.get(`/movie/${movieId}`)
+        const response = await axiosInstance1.get(`/movie/${movieId}`)
         setMovie(response.data)
       } catch (error) {
         console.error(error)
@@ -36,8 +36,8 @@ const DetailPage = () => {
 
     const fetchCredits = async () => {
       try {
-        const response = await axiosInstance.get(`/movie/${movieId}/credits`)
-        setCast(response.data.cast.slice(0, 24)) 
+        const response = await axiosInstance1.get(`/movie/${movieId}/credits`)
+        setCast(response.data.cast.slice(0, 24))
       } catch (error) {
         console.error(error)
       }
