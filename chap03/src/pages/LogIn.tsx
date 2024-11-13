@@ -1,9 +1,13 @@
+import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as S from './SignInUp.style'
+import * as S from './LogInSignUp.style'
+import { handleLogin } from '../apis/authApis'
 
-const SignInPage = () => {
+const LogInPage = () => {
+  const navigate = useNavigate()
+
   const schema = z.object({
     email: z
       .string()
@@ -27,13 +31,25 @@ const SignInPage = () => {
     resolver: zodResolver(schema),
   })
 
-  const onSubmit = (data: FormData) => {
-    console.log('로그인 데이터 제출', data)
+  const CompleteLogin = async (data: FormData) => {
+    console.log('로그인 데이터 확인', data)
+    try {
+      const response = await handleLogin({
+        email: data.email,
+        password: data.password,
+      })
+      console.log('로그인 완료', response)
+      localStorage.setItem('AToken', response.refreshToken)
+      localStorage.setItem('RToken', response.accessToken)
+      navigate('/')
+    } catch (error) {
+      console.log('로그인 중 오류 발생:', error)
+    }
   }
 
   return (
     <S.Root>
-      <S.Form onSubmit={handleSubmit(onSubmit)}>
+      <S.Form onSubmit={handleSubmit(CompleteLogin)}>
         <S.H2>로그인</S.H2>
         <S.InputWrapper>
           <S.Input type="email" placeholder="Email" {...register('email')} />
@@ -47,11 +63,12 @@ const SignInPage = () => {
           />
           <p style={{ color: 'gray' }}>{errors.password?.message as string}</p>
         </S.InputWrapper>
-        <S.SubmitInput type="submit" value="Submit" />
+        <S.SubmitButton type="submit" value="Submit">
+          로그인
+        </S.SubmitButton>
       </S.Form>
     </S.Root>
   )
 }
 
-export default SignInPage
-
+export default LogInPage

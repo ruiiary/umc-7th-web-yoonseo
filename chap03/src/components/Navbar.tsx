@@ -9,7 +9,7 @@ const Navbar = () => {
           <h2 style={{ color: '#896CFF' }}>LOGO</h2>
         </Link>
         <ButtonWrapper>
-          <Link to={'/sign-in'}>
+          <Link to={'/log-in'}>
             <Button>로그인</Button>
           </Link>
           <Link to="/sign-up">

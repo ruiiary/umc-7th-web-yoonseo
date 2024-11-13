@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as S from './SignInUp.style'
+import * as S from './LogInSignUp.style'
+import { handleSignUp } from '../apis/authApis'
 
 const SignUpPage = () => {
   const schema = z
@@ -19,11 +21,13 @@ const SignUpPage = () => {
     })
     .refine((data) => data.password === data.passwordCheck, {
       message: '비밀번호가 일치하지 않습니다.',
-      path: ['passwordCheck'], 
+      path: ['passwordCheck'],
     })
 
   // form data 타입 정의
   type FormData = z.infer<typeof schema>
+
+  const navigate = useNavigate()
 
   const {
     register,
@@ -33,13 +37,25 @@ const SignUpPage = () => {
     resolver: zodResolver(schema),
   })
 
-  const onSubmit = (data: FormData) => {
-    console.log('폼 데이터 제출', data)
+  const CompleteSignUp = async (data: FormData) => {
+    console.log('회원가입 데이터 확인', data)
+
+    try {
+      const response = await handleSignUp({
+        email: data.email,
+        password: data.password,
+        passwordCheck: data.passwordCheck,
+      })
+      console.log('회원가입 완료', response)
+      navigate('/log-in')
+    } catch (error) {
+      console.log('회원가입 중 오류', error)
+    }
   }
 
   return (
     <S.Root>
-      <S.Form onSubmit={handleSubmit(onSubmit)}>
+      <S.Form onSubmit={handleSubmit(CompleteSignUp)}>
         <S.H2>회원가입</S.H2>
         <S.InputWrapper>
           <S.Input
@@ -68,7 +84,9 @@ const SignUpPage = () => {
             {errors.passwordCheck?.message as string}
           </p>
         </S.InputWrapper>
-        <S.SubmitInput type="submit" value="Submit" />
+        <S.SubmitButton type="submit" value="Submit">
+          회원가입
+        </S.SubmitButton>
       </S.Form>
     </S.Root>
   )

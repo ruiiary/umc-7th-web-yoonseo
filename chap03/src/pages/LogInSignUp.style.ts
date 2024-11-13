@@ -33,7 +33,11 @@ export const InputWrapper = styled.div`
   text-align: left;
 `
 
-export const SubmitInput = styled(Input)`
+export const SubmitButton = styled.button`
+  height: 40px;
+  width: 370px;
+  padding-left: 10px;
+  font-size: 13px;  
   border-radius: 20px;
   margin-top: 10px;
   font-weight: bold;

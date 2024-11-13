@@ -10,7 +10,7 @@ import NowPlaying from './pages/movies/NowPlaying'
 import Popular from './pages/movies/Popular'
 import TopRated from './pages/movies/TopRated'
 import UpComing from './pages/movies/UpComing'
-import SignInPage from './pages/SignIn'
+import LogInPage from './pages/LogIn'
 import SignUpPage from './pages/SignUp'
 
 import RootLayout from './style/root-layout'
@@ -61,8 +61,8 @@ const router = createBrowserRouter([
         element: <SignUpPage />,
       },
       {
-        path: 'sign-in',
-        element: <SignInPage />,
+        path: 'log-in',
+        element: <LogInPage />,
       },
     ],
   },
