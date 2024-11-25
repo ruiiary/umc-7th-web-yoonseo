@@ -34,6 +34,7 @@ const Navbar = () => {
     return <p>로딩 중...</p> // 로딩 중일 경우
   }
 
+  const userName = userInfo?.email.split('@')[0]
   return (
     <nav>
       <NavWrapper>
@@ -43,7 +44,7 @@ const Navbar = () => {
 
         {userInfo ? (
           <UserSection>
-            <p>안녕하세요, {userInfo.email}님!</p>
+            <p>안녕하세요, {userName}님!</p>
             <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
           </UserSection>
         ) : (

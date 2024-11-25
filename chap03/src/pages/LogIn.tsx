@@ -42,6 +42,7 @@ const LogInPage = () => {
       localStorage.setItem('AToken', response.refreshToken)
       localStorage.setItem('RToken', response.accessToken)
       navigate('/')
+      window.location.reload()
     } catch (error) {
       console.log('로그인 중 오류 발생:', error)
     }
