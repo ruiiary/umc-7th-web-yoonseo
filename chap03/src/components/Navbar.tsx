@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
-import { getUserInfo } from '../apis/authApis'
+import { getUserInfo, handleLogout } from '../apis/authApis'
 
 interface UserInfo {
   id: number
@@ -44,7 +44,7 @@ const Navbar = () => {
         {userInfo ? (
           <UserSection>
             <p>안녕하세요, {userInfo.email}님!</p>
-            <LogoutButton>로그아웃</LogoutButton>
+            <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
           </UserSection>
         ) : (
           <ButtonWrapper>
