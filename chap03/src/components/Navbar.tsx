@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
-import { getUserInfo } from '../apis/authApis'
+import { getUserInfo, handleLogout } from '../apis/authApis'
 
 interface UserInfo {
   id: number
@@ -34,6 +34,7 @@ const Navbar = () => {
     return <p>로딩 중...</p> // 로딩 중일 경우
   }
 
+  const userName = userInfo?.email.split('@')[0]
   return (
     <nav>
       <NavWrapper>
@@ -43,8 +44,8 @@ const Navbar = () => {
 
         {userInfo ? (
           <UserSection>
-            <p>안녕하세요, {userInfo.email}님!</p>
-            <LogoutButton>로그아웃</LogoutButton>
+            <p>안녕하세요, {userName}님!</p>
+            <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
           </UserSection>
         ) : (
           <ButtonWrapper>

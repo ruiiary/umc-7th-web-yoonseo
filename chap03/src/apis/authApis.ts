@@ -42,3 +42,10 @@ export const getUserInfo = async () => {
   }
 };
 
+//로그아웃 api
+export const handleLogout = () => {
+  localStorage.removeItem('AToken');
+  localStorage.removeItem('RToken');
+  window.location.reload();
+};
+
