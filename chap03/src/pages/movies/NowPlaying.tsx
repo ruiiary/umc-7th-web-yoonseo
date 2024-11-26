@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
-import axios, { AxiosResponse } from 'axios'
+import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import Card from '../../components/Card'
+import { getMovies } from '../../hooks/useGetMovies'
 
 // 단일 영화 데이터 인터페이스 정의
 interface Movie {
@@ -10,39 +10,25 @@ interface Movie {
   poster_path: string
 }
 
-// API 응답 형식 정의
-interface MoviesResponse {
-  results: Movie[]
-}
-
 const NowPlaying = () => {
-  // Movie 배열을 상태로 설정
-  const [movies, setMovies] = useState<Movie[]>([])
+  const {
+    data: movies,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['movies', 'now_playing'], // 캐싱 키
+    queryFn: () => getMovies({ category: 'now_playing', pageParam: 1 }), // 일반 함수 호출
+    staleTime: 10 * 1000, // 10초 동안 데이터 신선 유지
+  })
 
-  useEffect(() => {
-    const getMovies = async () => {
-      try {
-        const response: AxiosResponse<MoviesResponse> = await axios.get(
-          `${import.meta.env.VITE_MOVIE_API_URL}/movie/now_playing?language=en-US&page=1`,
-          {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_MY_API}`,
-            },
-          }
-        )
-        setMovies(response.data.results)
-      } catch (error) {
-        console.error('영화 데이터를 가져오는 중 오류 발생:', error)
-      }
-    }
-    getMovies()
-  }, [])
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error fetching movies.</div>
 
   return (
     <Root>
       <h2>현재 상영 중인</h2>
       <CardList>
-        {movies.map((movie) => (
+        {movies?.results?.map((movie: Movie) => (
           <Card
             key={movie.id}
             title={movie.title}
@@ -63,4 +49,5 @@ const CardList = styled.div`
   gap: 16px;
   padding: 20px;
 `
+
 const Root = styled.div``

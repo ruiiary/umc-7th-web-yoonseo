@@ -12,9 +12,10 @@ import TopRated from './pages/movies/TopRated'
 import UpComing from './pages/movies/UpComing'
 import LogInPage from './pages/LogIn'
 import SignUpPage from './pages/SignUp'
-
 import RootLayout from './style/root-layout'
 import GlobalStyle from './style/GlobalStyle'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 // 2. 연결
 const router = createBrowserRouter([
@@ -68,12 +69,15 @@ const router = createBrowserRouter([
   },
 ])
 
+const queryClient = new QueryClient()
+
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <GlobalStyle />
       <RouterProvider router={router} />
-    </>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   )
 }
 

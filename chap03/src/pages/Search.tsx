@@ -4,7 +4,8 @@ import Card from '../components/Card'
 import useCustomFetch from '../hooks/useCustomFetch.ts'
 import { FaSearch } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
-import { useDebounce } from '../hooks/useDebounce' // 커스텀 훅 import
+import { useDebounce } from '../hooks/useDebounce' 
+import { cardSkeleton } from '../components/Skeleton/card-skeleton.tsx'
 
 // 단일 영화 데이터 인터페이스 정의
 interface Movie {
@@ -65,7 +66,9 @@ const SearchPage = () => {
   } = useCustomFetch<MoviesResponse>(url)
   console.log(movies)
 
-  if (isLoading) return <div>Loading...</div>
+  if (!isLoading) {
+    return <CardSkeleton />
+  }
   if (isError) return <div>Error occurred while fetching data</div>
 
   return (

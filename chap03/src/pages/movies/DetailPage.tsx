@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import axiosInstance1 from '../../apis/axios-instance'
+import { useQuery } from '@tanstack/react-query'
+import { getMovies } from '../../hooks/useGetMovies'
 
 interface MovieDetail {
   title: string
@@ -21,35 +21,35 @@ interface CastMember {
 
 const DetailPage = () => {
   const { movieId } = useParams<{ movieId: string }>()
-  const [movie, setMovie] = useState<MovieDetail | null>(null)
-  const [cast, setCast] = useState<CastMember[]>([])
 
-  useEffect(() => {
-    const fetchMovieDetails = async () => {
-      try {
-        const response = await axiosInstance1.get(`/movie/${movieId}`)
-        setMovie(response.data)
-      } catch (error) {
-        console.error(error)
-      }
-    }
+  // 영화 상세 정보 가져오기
+  const {
+    data: movie,
+    isLoading: isLoadingMovie,
+    isError: isErrorMovie,
+  } = useQuery<MovieDetail>({
+    queryKey: ['movie', movieId],
+    queryFn: () => getMovies({ category: `${movieId}`, pageParam: 1 }), // getMovies 호출
+    staleTime: 5 * 60 * 1000, // 데이터 신선 상태 유지 시간 (5분)
+  })
 
-    const fetchCredits = async () => {
-      try {
-        const response = await axiosInstance1.get(`/movie/${movieId}/credits`)
-        setCast(response.data.cast.slice(0, 24))
-      } catch (error) {
-        console.error(error)
-      }
-    }
+  // 출연진 정보 가져오기
+  const {
+    data: credits,
+    isLoading: isLoadingCredits,
+    isError: isErrorCredits,
+  } = useQuery<{ cast: CastMember[] }>({
+    queryKey: ['credits', movieId],
+    queryFn: () => getMovies({ category: `${movieId}/credits`, pageParam: 1 }), // getMovies 호출
+    staleTime: 5 * 60 * 1000,
+  })
 
-    fetchMovieDetails()
-    fetchCredits()
-  }, [movieId])
+  if (isLoadingMovie || isLoadingCredits)
+    return <div>Loading movie details...</div>
+  if (isErrorMovie || isErrorCredits)
+    return <div>Error loading movie details...</div>
 
-  if (!movie) return <div>Loading movie details...</div>
-
-  const year = movie.release_date
+  const year = movie?.release_date
     ? new Date(movie.release_date).getFullYear()
     : 'N/A'
 
@@ -57,21 +57,21 @@ const DetailPage = () => {
     <MovieContainer>
       <MovieImageWrapper>
         <MovieImage
-          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-          alt={movie.title}
+          src={`https://image.tmdb.org/t/p/w500${movie?.poster_path}`}
+          alt={movie?.title}
         />
         <GradientOverlay />
         <MovieInfoOverlay>
-          <MovieTitle>{movie.title}</MovieTitle>
-          <P>평점: {movie.vote_average}</P>
+          <MovieTitle>{movie?.title}</MovieTitle>
+          <P>평점: {movie?.vote_average}</P>
           <P>개봉 연도: {year}</P>
-          <P>상영 시간: {movie.runtime}분</P>
-          <p>{movie.overview}</p>
+          <P>상영 시간: {movie?.runtime}분</P>
+          <p>{movie?.overview}</p>
         </MovieInfoOverlay>
       </MovieImageWrapper>
       <StyledH1>감독/출연</StyledH1>
       <CastList>
-        {cast.map((member) => (
+        {credits?.cast.slice(0, 24).map((member) => (
           <CastMemberCard key={member.id}>
             <CastImage
               src={
@@ -92,6 +92,7 @@ const DetailPage = () => {
 
 export default DetailPage
 
+// styled-components
 const MovieContainer = styled.div`
   background-color: black;
   width: 100%;
@@ -160,7 +161,6 @@ const StyledH1 = styled.h1`
   color: white;
 `
 
-// 출연진 리스트 스타일링
 const CastList = styled.div`
   display: flex;
   flex-wrap: wrap;

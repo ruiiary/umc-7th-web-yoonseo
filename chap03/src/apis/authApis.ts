@@ -25,22 +25,23 @@ export const handleLogin = async (requestData: LogInProps) => {
 
 
 
-// 유저정보 불러오기 api
+// 유저 정보 API 호출 함수
 export const getUserInfo = async () => {
-  const AToken = localStorage.getItem('AToken');
-  
+  const AToken = localStorage.getItem('AToken')
+
   try {
     const response = await axiosInstance2.get("user/me", {
       headers: {
         Authorization: `Bearer ${AToken}`,
       },
-    });
-    console.log('응답 데이터:', response.data);
-    return response.data;
+    })
+    console.log('응답 데이터:', response.data)
+    return response.data
   } catch (error) {
-    console.error("유저 정보를 가져오지 못했습니다:", error);
+    console.error("유저 정보를 가져오지 못했습니다:", error)
+    throw error
   }
-};
+}
 
 //로그아웃 api
 export const handleLogout = () => {
