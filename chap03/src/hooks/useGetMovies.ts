@@ -1,11 +1,30 @@
 import { axiosInstance1 } from '../apis/axios-instance';
 
-interface GetMoviesParams {
-  category: string; 
-  pageParam: number; 
+interface GetMoviesResponse {
+  results: Movie[];
+  total_pages: number;
+  page: number;
 }
 
-export const getMovies = async ({ category, pageParam }: GetMoviesParams) => {
-  const { data } = await axiosInstance1.get(`/movie/${category}?language=ko-KR&page=${pageParam}`);
+interface Movie {
+  id: number;
+  title: string;
+  poster_path: string;
+}
+
+
+export const getMovies = async ({
+  category,
+  pageParam,
+}: {
+  category: string;
+  pageParam: number;
+}): Promise<GetMoviesResponse> => {
+  const { data } = await axiosInstance1.get(
+    `/movie/${category}?page=${pageParam}`
+  );
   return data;
 };
+
+
+

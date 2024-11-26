@@ -1,48 +1,54 @@
-import { useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import Card from '../../components/Card'
 import { getMovies } from '../../hooks/useGetMovies'
 
-// 단일 영화 데이터 인터페이스 정의
-interface Movie {
-  id: number
-  title: string
-  poster_path: string
-}
-
 const NowPlaying = () => {
-  const {
-    data: movies,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ['movies', 'now_playing'], // 캐싱 키
-    queryFn: () => getMovies({ category: 'now_playing', pageParam: 1 }), // 일반 함수 호출
-    staleTime: 10 * 1000, // 10초 동안 데이터 신선 유지
-  })
+  const { data, isLoading, isError, fetchNextPage, hasNextPage } =
+    useInfiniteQuery({
+      queryKey: ['movies', 'now-playing'],
+      queryFn: ({ pageParam = 1 }) =>
+        getMovies({ category: 'now_playing', pageParam }),
+      getNextPageParam: (lastPage) => {
+        const nextPage = lastPage.page + 1
+        return nextPage <= lastPage.total_pages ? nextPage : undefined
+      },
+      initialPageParam: 1,
+    })
 
-  if (isLoading) return <div>Loading...</div>
-  if (isError) return <div>Error fetching movies.</div>
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (isError) {
+    return <div>Error fetching movies. Please try again later.</div>
+  }
 
   return (
     <Root>
       <h2>현재 상영 중인</h2>
       <CardList>
-        {movies?.results?.map((movie: Movie) => (
-          <Card
-            key={movie.id}
-            title={movie.title}
-            poster_path={movie.poster_path}
-          />
-        ))}
+        {data?.pages.map((page) =>
+          page.results.map((movie) => (
+            <Card
+              key={movie.id}
+              title={movie.title}
+              poster_path={movie.poster_path}
+            />
+          ))
+        )}
       </CardList>
+      {hasNextPage && (
+        <LoadMoreButton onClick={() => fetchNextPage()}>
+          Load More
+        </LoadMoreButton>
+      )}
     </Root>
   )
 }
 
 export default NowPlaying
 
-// styled-components
 const CardList = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -51,3 +57,19 @@ const CardList = styled.div`
 `
 
 const Root = styled.div``
+
+const LoadMoreButton = styled.button`
+  margin: 20px auto;
+  display: block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`
