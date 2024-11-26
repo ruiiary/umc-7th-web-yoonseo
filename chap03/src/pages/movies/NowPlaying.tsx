@@ -1,20 +1,26 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import Card from '../../components/Card'
 import { getMovies } from '../../hooks/useGetMovies'
 
-const NowPlaying = () => {
-  const { data, isLoading, isError, fetchNextPage, hasNextPage } =
-    useInfiniteQuery({
-      queryKey: ['movies', 'now-playing'],
-      queryFn: ({ pageParam = 1 }) =>
-        getMovies({ category: 'now_playing', pageParam }),
-      getNextPageParam: (lastPage) => {
-        const nextPage = lastPage.page + 1
-        return nextPage <= lastPage.total_pages ? nextPage : undefined
-      },
-      initialPageParam: 1,
-    })
+const NowPlayingWithPagination = () => {
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['movies', 'now-playing', currentPage],
+    queryFn: () => getMovies({ category: 'now_playing', page: currentPage }),
+    staleTime: 1000 * 60 * 5, // 5분 동안 데이터 신선 유지
+  })
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1)
+  }
+
+  const handleNextPage = () => {
+    if (data?.page && currentPage < data.total_pages)
+      setCurrentPage((prev) => prev + 1)
+  }
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -28,48 +34,73 @@ const NowPlaying = () => {
     <Root>
       <h2>현재 상영 중인</h2>
       <CardList>
-        {data?.pages.map((page) =>
-          page.results.map((movie) => (
-            <Card
-              key={movie.id}
-              title={movie.title}
-              poster_path={movie.poster_path}
-            />
-          ))
-        )}
+        {data?.results.map((movie) => (
+          <Card
+            key={movie.id}
+            title={movie.title}
+            poster_path={movie.poster_path}
+          />
+        ))}
       </CardList>
-      {hasNextPage && (
-        <LoadMoreButton onClick={() => fetchNextPage()}>
-          Load More
-        </LoadMoreButton>
-      )}
+      <Pagination>
+        <PaginationButton
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+          isDisabled={currentPage === 1}
+        >
+          Previous
+        </PaginationButton>
+        <PageInfo>
+          Page {currentPage} of {data?.total_pages}
+        </PageInfo>
+        <PaginationButton
+          onClick={handleNextPage}
+          disabled={currentPage === data?.total_pages}
+          isDisabled={currentPage === data?.total_pages}
+        >
+          Next
+        </PaginationButton>
+      </Pagination>
     </Root>
   )
 }
 
-export default NowPlaying
+export default NowPlayingWithPagination
+
+// Styled Components
+const Root = styled.div`
+  padding: 20px;
+`
 
 const CardList = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  padding: 20px;
 `
 
-const Root = styled.div``
+const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 16px;
+`
 
-const LoadMoreButton = styled.button`
-  margin: 20px auto;
-  display: block;
-  padding: 10px 20px;
-  background-color: #007bff;
+const PaginationButton = styled.button<{ isDisabled: boolean }>`
+  background-color: ${({ isDisabled }) => (isDisabled ? '#ccc' : '#007bff')};
   color: white;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
+  padding: 10px 20px;
+  cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
   font-size: 16px;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: ${({ isDisabled }) => (isDisabled ? '#ccc' : '#0056b3')};
   }
+`
+
+const PageInfo = styled.div`
+  font-size: 16px;
+  font-weight: bold;
 `

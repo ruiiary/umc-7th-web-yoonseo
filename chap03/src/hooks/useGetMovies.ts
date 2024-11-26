@@ -3,7 +3,7 @@ import { axiosInstance1 } from '../apis/axios-instance';
 interface GetMoviesResponse {
   results: Movie[];
   total_pages: number;
-  page: number;
+  page: number; // 현재 페이지 번호
 }
 
 interface Movie {
@@ -12,19 +12,13 @@ interface Movie {
   poster_path: string;
 }
 
-
 export const getMovies = async ({
   category,
-  pageParam,
+  page,
 }: {
   category: string;
-  pageParam: number;
+  page: number;
 }): Promise<GetMoviesResponse> => {
-  const { data } = await axiosInstance1.get(
-    `/movie/${category}?page=${pageParam}`
-  );
+  const { data } = await axiosInstance1.get(`/movie/${category}?page=${page}`);
   return data;
 };
-
-
-

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { getMovies } from '../../hooks/useGetMovies'
+import { getMovieDetail, getMovieCredits } from '../../hooks/api'
 
 interface MovieDetail {
   title: string
@@ -29,8 +29,8 @@ const DetailPage = () => {
     isError: isErrorMovie,
   } = useQuery<MovieDetail>({
     queryKey: ['movie', movieId],
-    queryFn: () => getMovies({ category: `${movieId}`, pageParam: 1 }), // getMovies 호출
-    staleTime: 5 * 60 * 1000, // 데이터 신선 상태 유지 시간 (5분)
+    queryFn: () => getMovieDetail(movieId!),
+    staleTime: 5 * 60 * 1000,
   })
 
   // 출연진 정보 가져오기
@@ -40,7 +40,7 @@ const DetailPage = () => {
     isError: isErrorCredits,
   } = useQuery<{ cast: CastMember[] }>({
     queryKey: ['credits', movieId],
-    queryFn: () => getMovies({ category: `${movieId}/credits`, pageParam: 1 }), // getMovies 호출
+    queryFn: () => getMovieCredits(movieId!),
     staleTime: 5 * 60 * 1000,
   })
 
